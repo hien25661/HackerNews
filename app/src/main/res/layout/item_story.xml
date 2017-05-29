@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:weightSum="10">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1.5"
+        android:background="@color/color_number_area"
+        android:gravity="center"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/tvNumb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1"
+            android:textColor="@color/color_text_title"
+            android:textStyle="bold"
+            android:textSize="15sp"
+            android:layout_marginBottom="3dp"
+            />
+        <TextView
+            android:id="@+id/tvScore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="+17"
+            android:textColor="@color/color_text_author"
+            android:textStyle="bold"
+            android:textSize="13sp"/>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_weight="8.5">
+
+        <TextView
+            android:id="@+id/tvNameStory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:textColor="@color/color_text_title"
+            android:textStyle="bold"
+            android:textSize="15sp"
+            android:layout_marginBottom="5dp"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvNameStory"
+            android:gravity="center_vertical">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvAuthor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/color_text_author"
+                    android:textStyle="bold|italic"
+                    android:textSize="13sp"/>
+
+                <TextView
+                    android:id="@+id/tvTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/color_text_author"
+                    android:textStyle="bold|italic"
+                    android:textSize="15sp"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="10dp">
+                <TextView
+                    android:id="@+id/tvNumbComment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@mipmap/ic_comment"
+                    android:text="0"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/color_numb_comment"
+                    android:textSize="13sp"/>
+                <ImageView
+                    android:id="@+id/imvGotoUrl"
+                    android:layout_marginLeft="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/ic_url"/>
+            </LinearLayout>
+
+        </RelativeLayout>
+    </RelativeLayout>
+</LinearLayout>

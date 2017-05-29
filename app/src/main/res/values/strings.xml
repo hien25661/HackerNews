@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Hacker New</string>
+    <string name="top_story">Top Stories</string>
+    <string name="story_score_format">+%d</string>
+</resources>
