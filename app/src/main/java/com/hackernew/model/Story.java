@@ -51,6 +51,7 @@ public class Story extends BaseModel implements Parcelable {
         title = in.readString();
         type = in.readString();
         url = in.readString();
+        kids = in.readArrayList(null);
     }
 
     @Override
@@ -63,6 +64,7 @@ public class Story extends BaseModel implements Parcelable {
         dest.writeString(title);
         dest.writeString(type);
         dest.writeString(url);
+        dest.writeList(kids);
     }
 
     @Override
