@@ -28,11 +28,11 @@ import butterknife.ButterKnife;
  */
 
 public class TopStoryAdapter extends UltimateViewAdapter<TopStoryAdapter.StoryViewHolder> {
-    private ArrayList<Story> mListIdStory = new ArrayList<>();
+    private ArrayList<Story> mListStory = new ArrayList<>();
     private Loader loader;
     private Context mContext;
     public TopStoryAdapter(ArrayList<Story> list){
-        this.mListIdStory = list;
+        this.mListStory = list;
     }
     @Override
     public StoryViewHolder newFooterHolder(View view) {
@@ -56,7 +56,7 @@ public class TopStoryAdapter extends UltimateViewAdapter<TopStoryAdapter.StoryVi
 
     @Override
     public int getAdapterItemCount() {
-        return mListIdStory.size();
+        return mListStory.size();
     }
 
     @Override
@@ -66,8 +66,8 @@ public class TopStoryAdapter extends UltimateViewAdapter<TopStoryAdapter.StoryVi
 
     @Override
     public void onBindViewHolder(StoryViewHolder holder, int position) {
-        if(position >=0 && position < mListIdStory.size()){
-            final Story item = mListIdStory.get(position);
+        if(position >=0 && position < mListStory.size()){
+            final Story item = mListStory.get(position);
             if(item!=null) {
                 if (!item.isLoaded()) {
                     loadInfoItem(holder, item, position);
