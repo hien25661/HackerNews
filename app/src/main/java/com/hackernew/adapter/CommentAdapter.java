@@ -68,12 +68,12 @@ public class CommentAdapter extends UltimateViewAdapter<CommentAdapter.CommentHo
 
     @Override
     public void onBindViewHolder(CommentHolder holder, int position) {
-        if(position >=0 && position < comments.size()){
+        if (position >= 0 && position < comments.size()) {
             Comment comment = comments.get(position);
-            if(!comment.isLoaded()){
-                loadComment(holder,comment,position);
-            }else {
-                bindData(holder,comment,false);
+            if (!comment.isLoaded()) {
+                loadComment(holder, comment, position);
+            } else {
+                bindData(holder, comment, false);
             }
         }
     }
@@ -82,11 +82,10 @@ public class CommentAdapter extends UltimateViewAdapter<CommentAdapter.CommentHo
         loader.getCommentItem(comment.getId(), new ResultCallBackApi() {
             @Override
             public void success(Object... params) {
-                if(params[0]!=null){
+                if (params[0] != null) {
                     Comment mItem = (Comment) params[0];
                     comment.setObject(mItem);
-                    comment.setLoaded(true);
-                    bindData(holder,comment,false);
+                    bindData(holder, comment, false);
                 }
             }
 
@@ -99,43 +98,55 @@ public class CommentAdapter extends UltimateViewAdapter<CommentAdapter.CommentHo
 
     private void bindData(CommentHolder holder, Comment comment, boolean isReply) {
         String textComment = comment.getText();
-        String timeAndAuthor = Utils.getFormatTime(comment.getTime()*1000) + "-" + comment.getBy();
-        if(textComment!=null) {
-            if(!isReply) {
+        String timeAndAuthor = Utils.getFormatTime(comment.getTime() * 1000) + "-" + comment.getBy();
+        holder.tvReply.setVisibility(View.GONE);
+        holder.tvHeaderReply.setVisibility(View.GONE);
+        if (textComment != null) {
+            if (!isReply) {
                 holder.tvComment.setText(Html.fromHtml(textComment));
-            }else {
+            } else {
+                holder.tvReply.setVisibility(View.VISIBLE);
                 holder.tvReply.setText(Html.fromHtml(textComment));
             }
         }
-        if(!isReply) {
+        if (!isReply) {
             holder.tvHeaderComment.setText(timeAndAuthor);
-        }else {
+        } else {
+            holder.tvHeaderReply.setVisibility(View.VISIBLE);
             holder.tvHeaderReply.setText(timeAndAuthor);
         }
-        if(comment.getKids()!=null && comment.getKids().size()>0 && !isReply){
+        /*if(comment.getKids()!=null && comment.getKids().size()>0 && !isReply){
             holder.replyView.setVisibility(View.GONE);
             loadLatestReply(holder,comment);
         }else {
             holder.replyView.setVisibility(View.VISIBLE);
+        }*/
+        if (!isReply) {
+            loadLatestReply(holder, comment);
         }
     }
 
-    private void loadLatestReply(final CommentHolder holder, Comment comment) {
-        long latestIdReply = comment.getKids().get(0);
-        loader.getCommentItem(latestIdReply, new ResultCallBackApi() {
-            @Override
-            public void success(Object... params) {
-                if(params[0]!=null){
-                    Comment replyItem = (Comment) params[0];
-                    bindData(holder,replyItem,true);
+    private void loadLatestReply(final CommentHolder holder, final Comment comment) {
+        if (comment.getKids() != null && comment.getKids().size() > 0 && !comment.isLoaded()) {
+            long latestIdReply = comment.getKids().get(0);
+            loader.getCommentItem(latestIdReply, new ResultCallBackApi() {
+                @Override
+                public void success(Object... params) {
+                    if (params[0] != null) {
+                        comment.setLoaded(true);
+                        Comment replyItem = (Comment) params[0];
+                        bindData(holder, replyItem, true);
+                    }
                 }
-            }
 
-            @Override
-            public void failed() {
-
-            }
-        });
+                @Override
+                public void failed() {
+                    comment.setLoaded(true);
+                }
+            });
+        }else {
+            comment.setLoaded(true);
+        }
     }
 
     @Override
@@ -160,6 +171,7 @@ public class CommentAdapter extends UltimateViewAdapter<CommentAdapter.CommentHo
         TextView tvReply;
         @Bind(R.id.replyView)
         View replyView;
+
         public CommentHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
