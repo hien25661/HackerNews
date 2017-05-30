@@ -96,7 +96,9 @@ public class CommentAdapter extends UltimateViewAdapter<CommentAdapter.CommentHo
     }
 
     private void bindData(CommentHolder holder, Comment comment, int position) {
-        holder.tvComment.setText(Html.fromHtml(comment.getText()));
+        if(comment.getText()!=null) {
+            holder.tvComment.setText(Html.fromHtml(comment.getText()));
+        }
         holder.tvHeaderComment.setText(Utils.getFormatTime(comment.getTime()*1000) + "-" + comment.getBy());
     }
 
