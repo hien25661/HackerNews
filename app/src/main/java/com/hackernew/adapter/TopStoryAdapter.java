@@ -86,7 +86,9 @@ public class TopStoryAdapter extends UltimateViewAdapter<TopStoryAdapter.StoryVi
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        EventBusUtils.getDefault().post(new ChooseStoryEvent(item));
+                        if(item.isLoaded()) {
+                            EventBusUtils.getDefault().post(new ChooseStoryEvent(item));
+                        }
                     }
                 });
             }
