@@ -1,6 +1,7 @@
 package com.hackernew.adapter;
 
 import android.content.Context;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -77,7 +78,9 @@ public class TopStoryAdapter extends UltimateViewAdapter<TopStoryAdapter.StoryVi
                 holder.imvGotoUrl.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Utils.openUrlBrowse(v.getContext(),item.getUrl());
+                        if(item.getUrl()!=null) {
+                            Utils.openUrlBrowse(v.getContext(), item.getUrl());
+                        }
                     }
                 });
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -101,7 +104,7 @@ public class TopStoryAdapter extends UltimateViewAdapter<TopStoryAdapter.StoryVi
     }
 
     private void loadInfoItem(final StoryViewHolder holder, final Story story, final int position){
-        loader.getInfoItem(story.getId(), new ResultCallBackApi() {
+        loader.getStoryItem(story.getId(), new ResultCallBackApi() {
             @Override
             public void success(Object... params) {
                 if(params[0]!=null){
@@ -120,20 +123,22 @@ public class TopStoryAdapter extends UltimateViewAdapter<TopStoryAdapter.StoryVi
 
     private void bindData(StoryViewHolder holder, Story story, int position) {
         holder.tvNameStory.setText(story.getTitle());
-        holder.tvAuthor.setText(story.getBy());
+        if(story.getUrl()!=null) {
+            holder.tvLink.setText(Uri.parse(story.getUrl()).getHost());
+        }
         holder.tvNumbStory.setText(""+(position+1));
         holder.tvScore.setText(String.format(mContext.getString(R.string.story_score_format),story.getScore()));
         if(story.getKids()!=null) {
             holder.tvNumbComment.setText("" + story.getKids().size());
         }
-        holder.tvTime.setText(""+story.getTime());
+        holder.tvTime.setText(Utils.getFormatTime(story.getTime() * 1000) + "-" + story.getBy());
     }
 
     class StoryViewHolder extends UltimateRecyclerviewViewHolder {
         @Bind(R.id.tvNameStory)
         TextView tvNameStory;
-        @Bind(R.id.tvAuthor)
-        TextView tvAuthor;
+        @Bind(R.id.tvLink)
+        TextView tvLink;
         @Bind(R.id.tvNumb)
         TextView tvNumbStory;
         @Bind(R.id.tvNumbComment)

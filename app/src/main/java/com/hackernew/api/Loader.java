@@ -5,6 +5,7 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.hackernew.BuildConfig;
+import com.hackernew.model.Comment;
 import com.hackernew.model.Story;
 
 import java.lang.reflect.Type;
@@ -56,17 +57,32 @@ public class Loader {
         });
     }
 
-    public void getInfoItem(long item_id, final ResultCallBackApi callback) {
-        HackerNewService.getService().getInfoItem(item_id).enqueue(new Callback<Story>() {
+    public void getStoryItem(long item_id, final ResultCallBackApi callback) {
+        HackerNewService.getService().getStoryItem(item_id).enqueue(new Callback<Story>() {
             @Override
             public void onResponse(Call<Story> call, Response<Story> response) {
-                Log.e("getInfoItem", "" + response.body().toJson());
+                Log.e("getStoryItem", "" + response.body().toJson());
                 callback.success(response.body());
             }
 
             @Override
             public void onFailure(Call<Story> call, Throwable t) {
-                Log.e("getInfoItem", "" + t.getMessage());
+                Log.e("getStoryItem", "" + t.getMessage());
+            }
+        });
+    }
+
+    public void getCommentItem(long item_id, final ResultCallBackApi callback) {
+        HackerNewService.getService().getComment(item_id).enqueue(new Callback<Comment>() {
+            @Override
+            public void onResponse(Call<Comment> call, Response<Comment> response) {
+                Log.e("getCommentItem", "" + response.body().toJson());
+                callback.success(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<Comment> call, Throwable t) {
+                Log.e("getCommentItem", "" + t.getMessage());
             }
         });
     }

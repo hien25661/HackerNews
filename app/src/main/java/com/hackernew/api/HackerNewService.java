@@ -11,11 +11,11 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
  */
 
 public class HackerNewService {
-    private static HackerNewApi instance;
+    private static HackerNewsApi instance;
 
-    public static HackerNewApi getService() {
+    public static HackerNewsApi getService() {
         if (instance == null) {
-            instance = getRetrofit().create(HackerNewApi.class);
+            instance = getRetrofit().create(HackerNewsApi.class);
         }
         return instance;
     }
@@ -27,6 +27,5 @@ public class HackerNewService {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
     }
-
 
 }

@@ -6,9 +6,14 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.widget.TextView;
 
 import com.hackernew.R;
+import com.hackernew.adapter.CommentAdapter;
 import com.hackernew.helper.Consts;
+import com.hackernew.helper.Utils;
+import com.hackernew.model.Comment;
 import com.hackernew.model.Story;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
+
+import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -28,9 +33,12 @@ public class DetailActivity extends BaseActivity {
     TextView tvTimeAndAuthor;
 
     @Bind(R.id.rcvComment)
-    UltimateRecyclerView rcvTopStory;
+    UltimateRecyclerView rcvComment;
 
     private Story story;
+    private ArrayList<Long> kids = new ArrayList<>();
+    private ArrayList<Comment> comments = new ArrayList<>();
+    private CommentAdapter adapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -43,15 +51,13 @@ public class DetailActivity extends BaseActivity {
 
     private void initView() {
         getSupportActionBar().setTitle(getString(R.string.story));
-        getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //Setup Recycleview
-        rcvTopStory.setHasFixedSize(false);
+        rcvComment.setHasFixedSize(false);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        rcvTopStory.setLayoutManager(linearLayoutManager);
-        rcvTopStory.mSwipeRefreshLayout.setEnabled(true);
-        rcvTopStory.addItemDividerDecoration(this);
+        rcvComment.setLayoutManager(linearLayoutManager);
+        rcvComment.mSwipeRefreshLayout.setEnabled(false);
     }
 
     private void initData() {
@@ -67,10 +73,27 @@ public class DetailActivity extends BaseActivity {
         tvTitle.setText(story.getTitle());
         tvUrl.setText(story.getUrl());
         if (story.getKids() != null && story.getKids().size() >= 0) {
-            tvNumbComment.setText(String.format(getString(R.string.numb_comment_format),
-                    story.getKids().size()));
+            kids = (ArrayList<Long>) story.getKids();
         }
-        tvTimeAndAuthor.setText("" + story.getTime() + "-" + story.getBy());
+        tvTimeAndAuthor.setText("" + Utils.getFormatTime(story.getTime() * 1000) + "-" + story.getBy());
+        tvNumbComment.setText(String.format(getString(R.string.numb_comment_format),
+                kids.size()));
+        //get 10 Latest comment
+        if(kids.size() > 0) {
+            comments = getTop10CommentList(kids);
+            adapter = new CommentAdapter(comments);
+            rcvComment.setAdapter(adapter);
+        }
+    }
+    private ArrayList<Comment> getTop10CommentList(ArrayList<Long> kids){
+        ArrayList<Comment> list = new ArrayList<>();
+        for (long id_kid : kids){
+            if(list.size() > 10) break;
+            Comment comment = new Comment();
+            comment.setId(id_kid);
+            list.add(comment);
+        }
+        return list;
     }
 
     @Override

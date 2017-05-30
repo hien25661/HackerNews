@@ -2,39 +2,49 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:weightSum="3">
+    android:weightSum="3"
+    android:background="@color/color_number_area">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="wrap_content"
         android:background="@color/color_numb_comment"
         android:orientation="vertical"
-        android:weightSum="3">
+        android:weightSum="3"
+        android:paddingLeft="15dp"
+        android:paddingRight="10dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="5dp">
 
         <TextView
             android:id="@+id/tvTitle"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:textSize="15sp"
+            android:textSize="20sp"
             android:text="12 Comments"
             android:gravity="center_vertical"
             android:textStyle="bold"
-            android:textColor="@color/color_text_title"/>
+            android:textColor="@color/color_text_title"
+            android:layout_marginBottom="10dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_marginBottom="5dp"
+            >
 
             <TextView
                 android:id="@+id/tvUrl"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="13sp"
+                android:textColor="@color/color_action_bar"
+                android:autoLink="web"
                 />
             <TextView
                 android:id="@+id/tvTimeAndAuthor"
@@ -49,16 +59,18 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:textSize="15sp"
+            android:textSize="18sp"
             android:text="0 Comments"
             android:gravity="center_vertical"
             android:textStyle="bold"
-            android:textColor="@color/color_text_title"/>
+            android:textColor="@color/color_text_title"
+            android:layout_gravity="bottom"/>
     </LinearLayout>
 
     <com.marshalchen.ultimaterecyclerview.UltimateRecyclerView
         android:id="@+id/rcvComment"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="2"></com.marshalchen.ultimaterecyclerview.UltimateRecyclerView>
+        android:layout_height="wrap_content"
+        app:recyclerviewEmptyView="@layout/empty_view"
+        app:recyclerviewScrollbars="vertical"></com.marshalchen.ultimaterecyclerview.UltimateRecyclerView>
 </LinearLayout>
