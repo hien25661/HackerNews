@@ -72,6 +72,8 @@ public class CommentAdapter extends UltimateViewAdapter<CommentAdapter.CommentHo
             Comment comment = comments.get(position);
             if(!comment.isLoaded()){
                 loadComment(holder,comment,position);
+            }else {
+                bindData(holder,comment,false);
             }
         }
     }
@@ -84,7 +86,7 @@ public class CommentAdapter extends UltimateViewAdapter<CommentAdapter.CommentHo
                     Comment mItem = (Comment) params[0];
                     comment.setObject(mItem);
                     comment.setLoaded(true);
-                    bindData(holder,comment,position);
+                    bindData(holder,comment,false);
                 }
             }
 
@@ -95,11 +97,45 @@ public class CommentAdapter extends UltimateViewAdapter<CommentAdapter.CommentHo
         });
     }
 
-    private void bindData(CommentHolder holder, Comment comment, int position) {
-        if(comment.getText()!=null) {
-            holder.tvComment.setText(Html.fromHtml(comment.getText()));
+    private void bindData(CommentHolder holder, Comment comment, boolean isReply) {
+        String textComment = comment.getText();
+        String timeAndAuthor = Utils.getFormatTime(comment.getTime()*1000) + "-" + comment.getBy();
+        if(textComment!=null) {
+            if(!isReply) {
+                holder.tvComment.setText(Html.fromHtml(textComment));
+            }else {
+                holder.tvReply.setText(Html.fromHtml(textComment));
+            }
         }
-        holder.tvHeaderComment.setText(Utils.getFormatTime(comment.getTime()*1000) + "-" + comment.getBy());
+        if(!isReply) {
+            holder.tvHeaderComment.setText(timeAndAuthor);
+        }else {
+            holder.tvHeaderReply.setText(timeAndAuthor);
+        }
+        if(comment.getKids()!=null && comment.getKids().size()>0 && !isReply){
+            holder.replyView.setVisibility(View.GONE);
+            loadLatestReply(holder,comment);
+        }else {
+            holder.replyView.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void loadLatestReply(final CommentHolder holder, Comment comment) {
+        long latestIdReply = comment.getKids().get(0);
+        loader.getCommentItem(latestIdReply, new ResultCallBackApi() {
+            @Override
+            public void success(Object... params) {
+                if(params[0]!=null){
+                    Comment replyItem = (Comment) params[0];
+                    bindData(holder,replyItem,true);
+                }
+            }
+
+            @Override
+            public void failed() {
+
+            }
+        });
     }
 
     @Override
@@ -117,10 +153,16 @@ public class CommentAdapter extends UltimateViewAdapter<CommentAdapter.CommentHo
         TextView tvHeaderComment;
         @Bind(R.id.tvComment)
         TextView tvComment;
+
+        @Bind(R.id.tvHeaderReply)
+        TextView tvHeaderReply;
+        @Bind(R.id.tvReply)
+        TextView tvReply;
+        @Bind(R.id.replyView)
+        View replyView;
         public CommentHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-            tvComment.setMovementMethod(new ScrollingMovementMethod());
         }
     }
 }

@@ -1,6 +1,9 @@
 package com.hackernew.model;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Hien on 5/29/2017.
  */
@@ -12,6 +15,7 @@ public class Comment extends BaseModel{
     private long time;
     private String text;
     private String type;
+    private List<Long> kids = new ArrayList<>();
 
     private boolean isLoaded = false;
 
@@ -22,6 +26,7 @@ public class Comment extends BaseModel{
         this.time = another.time;
         this.type = another.type;
         this.text = another.text;
+        this.kids = another.kids;
     }
 
     public String getBy() {
@@ -70,6 +75,14 @@ public class Comment extends BaseModel{
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public List<Long> getKids() {
+        return kids;
+    }
+
+    public void setKids(List<Long> kids) {
+        this.kids = kids;
     }
 
     public boolean isLoaded() {
