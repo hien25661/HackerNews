@@ -5,6 +5,9 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.hackernew.R;
 import com.hackernew.adapter.TopStoryAdapter;
@@ -33,6 +36,7 @@ public class TopStoryActivity extends BaseActivity {
     private TopStoryAdapter adapter;
     private Loader loader;
     private ArrayList<Story> mListStories = new ArrayList<>();
+    private boolean isStagger = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,6 +46,30 @@ public class TopStoryActivity extends BaseActivity {
         initView();
         loadData();
     }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_user) {
+            if(!isStagger) {
+                rcvTopStory.setLayoutManager(new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL));
+                isStagger = true;
+            }else {
+                rcvTopStory.setLayoutManager(new LinearLayoutManager(this));
+                isStagger = false;
+            }
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     private void initView() {
         //setup ActionBar
@@ -50,10 +78,10 @@ public class TopStoryActivity extends BaseActivity {
         //Setup Recycleview
         rcvTopStory.setHasFixedSize(false);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        rcvTopStory.setLayoutManager(linearLayoutManager);
+        rcvTopStory.setLayoutManager(new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL));
         rcvTopStory.mSwipeRefreshLayout.setEnabled(true);
         rcvTopStory.setDefaultOnRefreshListener(pullToRefreshListener);
-        rcvTopStory.addItemDividerDecoration(this);
+       // rcvTopStory.addItemDividerDecoration(this);
     }
 
     private void loadData() {
