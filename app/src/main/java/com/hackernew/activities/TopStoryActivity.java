@@ -78,7 +78,7 @@ public class TopStoryActivity extends BaseActivity {
         //Setup Recycleview
         rcvTopStory.setHasFixedSize(false);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        rcvTopStory.setLayoutManager(new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL));
+        rcvTopStory.setLayoutManager(linearLayoutManager);
         rcvTopStory.mSwipeRefreshLayout.setEnabled(true);
         rcvTopStory.setDefaultOnRefreshListener(pullToRefreshListener);
        // rcvTopStory.addItemDividerDecoration(this);
